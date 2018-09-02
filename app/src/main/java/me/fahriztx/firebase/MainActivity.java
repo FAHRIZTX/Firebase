@@ -1,8 +1,9 @@
 package me.fahriztx.firebase;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
+        if(auth.getCurrentUser() != null){
+            startActivity(new Intent(MainActivity.this, UserActivity.class));
+        }
+
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(MainActivity.this, new OnCompleteListener<InstanceIdResult>() {
             @Override
             public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -74,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
                         FirebaseUser user = auth.getCurrentUser();
 
                         if(user != null){
-                            Toast.makeText(MainActivity.this, user.getUid(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(MainActivity.this, UserActivity.class));
+                            finish();
                         }
                     }else{
                         Toast.makeText(MainActivity.this, "Login Gagal", Toast.LENGTH_SHORT).show();
@@ -83,4 +89,5 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
 }
